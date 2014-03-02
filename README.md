@@ -8,7 +8,7 @@ najpierw sklonować repozytorium na swój dysk:
     $ git clone https://github.com/karolmajta/epi-tasks.git
 
 Po sklonowaniu repozytorium możesz wejść do nowo utworzonego katalogu.
-Będzie tam jedynie plik `README.txt` (to jest ten plik, który właśnie
+Będzie tam jedynie plik `README.md` (to jest ten plik, który właśnie
 czytasz). Aby wybrać konkretne zadanie musisz najpierw zrobić jego checkout.
 Zadania oznaczone są przez tagi. Aby zobaczyć listę zadań (tagów) wykonaj
 polecenie:
