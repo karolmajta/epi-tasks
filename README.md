@@ -40,4 +40,13 @@ a później nad drugim musisz wykonać:
     $ git checkout '002-binary-search'
     $ # tutaj pracujesz już nad drugim zadaniem
 
+Jestem przekonany, że jeśli raz spróbujesz pracować wykorzystując git,
+nie będziesz chciał robić tego inaczej. Jeśli jednak z jakichś względów
+nie chcesz używać git, każde zadanie możesz pobrać osobno korzystając
+z zakładki **Releases**:
+
+https://github.com/karolmajta/epi-tasks/releases
+
+Pobrane zadanie wystarczy rozpakować.
+
 Powodzenia!
