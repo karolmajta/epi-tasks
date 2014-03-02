@@ -184,7 +184,7 @@ var b = ("1" === 1); // b = false, dlaczego i jak się to dzieje?
 <pre><code>var a = 2 &lt; 3; // true
 </code></pre>
 <p>Dla łańcuchów znaków i tablic dokonuje porównania leksykograficznego:</p>
-<pre><code>var a = 'alamakota' &gt; 'hello'; // true
+<pre><code>var a = 'alamakota' &lt; 'hello'; // true
 var b = [1,2,4] &gt; [1,2,1]; // true
 </code></pre>
 <p>Dla obiektów zawsze zwraca false:</p>
@@ -342,7 +342,7 @@ for (var i = 0; i &lt; 2; ++i) {
     t[i] = i;
 }
 
-// t1 = [0, 1], t2 = [0, 2]
+// t1 = [0, 1], t2 = [0, 1]
 </code></pre>
 <p>Dlaczego?</p>
 
