@@ -1,40 +1,51 @@
-Wyszukiwanie w tablicy II (wyszukiwanie binarne)
-================================================
+Szyfr cezara
+============
 
-W pliku `script.js` znajduje się program wyszukujący w **posortowanej**
-tablicy `sortedArray` liczbę `numberToLookFor`. Uruchom w przeglądarce
-plik `index.html`, otwórz konsolę i sprawdź wynik działania programu.
+Szyfrem cezara nazywamy kod polegający na przypisaniu literom
+alfabetu liter tego samego alfabetu, jednak z pewnym przesunięciem.
+Liczba oznaczająca długość tego przesunięcia nazywana jest kluczem,
+ponieważ znając ją można z szyfrogramu (*ciphertext*) uzyskać
+oryginalną wiadomość (*plaintext*).
 
-- Sprawdź, czy po zmianie szukanego numeru program nadal działa poprawnie.
-- Sprawdź, czy po zmianie szukanego numeru na taki, którego nie ma w tablicy
-  program nadal działa poprawnie.
-- Sprawdź, czy po dodaniu, lub usunięciu elementów z tablicy (przy zachowaniu
-  ich rosnącej kolejności) program nadal działa poprawnie.
-- Zamień tablicę `sortedArray` na nieposortowaną (postaraj się przy tym o
-  możliwie losową kolejność liczb), czy program nadal działa poprawnie?
+Poniżej przedstawiono przyporządkowanie nowego alfabetu dla alfabetu
+łacińskiego i klucza 4.
 
-Pytania:
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+E F G H I J K L M N O P Q R S T U V W X Y Z A B C D
 
-- Czy potrafisz wytłumaczyć jak działa wyszukiwanie binarne?
-- Dlaczego aby program działał poprawnie, tablica na której prowadzimy
-  wyszukiwanie binarne musi być posortowana?
-- Przypomnij sobie, że w poprzednim ćwiczeniu wyszukiwaliśmy w tablicy
-  liczb, tablicy ciągów znaków, oraz w tablicy obiektów w postaci
-  `{x: 1, y: 2}`, które reprezentowały punkty na płaszczyźnie.
-  Wyszukiwanie binarne można zastosować do posortowanej tablicy liczb,
-  oraz posortowanej tablicy łańcuchów znaków, jednak nie można zastosować
-  go do tablicy punktów. Dlaczego?
-- Czy potrafisz powiedzieć ile dokładnie porównań zostanie wykonanych
-  dla tablicy o długości *n* jeśli szukana liczba nie znajduje się w tablicy?
-- Czy potrafisz podać złożoność obliczeniową programu `script.js`?
+Dla zbudowania szyfru cezara w JS przydatne będą nam dwie funkcje.
 
-Zadania:
+Funkcja `charCodeAt(n)`, którą posiada każdy łańcuch znaków zwraca
+liczbę porządkową ASCII znaku na n-1szej pozycji:
 
-- Zmień program tak, aby tablica `sortedArray` zawierała łańcuchy znaków, oraz
-  żeby wyszukiwany był łańcuch znaków, a nie liczba.
-- Pewnie zauważyłeś już, że ręczne dbanie o to, aby tablica `sortedArray` była
-  posortowana jest uciążliwe (szczególnie dla łańcuchów znaków). Wykorzystaj
-  funkcję `Array.sort()` aby zadbać o to, żeby tablica faktycznie była
-  posortowana, zanim program wejdzie do pętli. Jej dokumentacje znajdziesz
-  pod adresem:
-  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+    var a = "Hello";
+    console.log(a.charCodeAt(0)); // wypisze 72
+    console.log(a.charCodeAt(4)); // wypisze 111
+    console.log(a.charCodeAt(20)); // wypisze NaN - sięgamy poza string
+
+Funkcja `String.fromCharCode(c)` zwraca znak odpowiadający danej liczbie
+w alfabecie ASCII.
+
+    console.log(String.fromCharCode(111)); // wypisze o
+    console.log(String.fromCharCode(72)); // powinieneś wiedzieć :)
+    console.log(String.fromCharCode(97)); // no właśnie, co?
+
+Dzięki temu bardzo łatwo możesz wygenerować znak ASCII przesunięty
+o określony klucz.
+
+    var source = "a";
+    var targetAsNumber = source.charCodeAt(source) + 3;
+    var target = String.fromCharCode(targetAsNumber);
+    console.log(target); // wypisze d
+
+W pliku `script.js` znajduje się string `plaintext`. Utwórz
+string `ciphertext` przesuniętą o klucz 2 względem oryginału.
+Wypisz wynik do konsoli.
+
+Mogą przydać ci się również funkcje:
+
+`String.prototype.split()`
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
+
+`String.prototype.join()`
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join
