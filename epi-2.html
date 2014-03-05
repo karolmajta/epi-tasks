@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>EPI - Programowanie w języku JavaScript</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body { margin-top: 50px; margin-bottom: 50px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+
+<!-- generated content goes here -->
+
+<h1 id="funkcje-i-ich-relacja-z-innymi-obiektami">Funkcje i ich relacja z innymi obiektami</h1>
+<h2 id="funkcje">Funkcje</h2>
+<p>Funkcja w języku JavaScript ma pewne cechy wspólne z funkcjami, które
+znasz z matematyki. Poniżej krótkie zestawienie.</p>
+<h3 id="przyjmowane-argumenty">Przyjmowane argumenty</h3>
+<p>Podobnie jak w matematyce, funkcje w JavaScript przyjmują pewną liczbę
+argumentów. W JavaScript spotkać można również funkcje, które nie przyjmują
+argumentów (zazwyczaj są one wywoływane dla tak zwanych <em>efektów ubocznych</em>).</p>
+<h3 id="zwracane-wartosci">Zwracane wartości</h3>
+<p>Podobnie jak w matematyce, funkcje w JavaScript zawsze zwracają wartość
+(w matematyce mówi się raczej, że mają wartość dla pewnych argumentów,
+jednak z punktu widzenia programisty JS te pojęcia są dość zbliżone).</p>
+<p>W przeciwieństwie do funkcji znanych z matematyki, które dla danych
+argumentów zawsze mają jedną wartość, funkcja w JavaScript może zwracać
+różne wartości dla tych samych argumentów.</p>
+<p>Funkcje takie nazywamy <strong>nieczystymi</strong> (<em>ang. impure</em>). Funkcja
+jest nieczysta jeśli wartość przez nią zwracana może różnić się w
+zależnośći od argumentu. Przykładem takiej funkcji jest np <code>Date()</code>.
+W zależnośći od pory dnia i roku zwraca inny string dla tych samych
+argumentów (dokładniej dla tych samych żadnych argumentów).</p>
+<p>Innym sposobem w jaki funkcja może być nieczysta jest wywoływanie
+efektów ubocznych. Efektem ubocznym nazywamy każdą manifestacje
+działania funkcji inną, niż zwrócenie wartości. Przyjkładem
+takiej funkcji jest np <code>console.log</code>. Wywołując ją w konsoli
+przeglądarki mamy:</p>
+<pre><code>&gt; console.log('hello');
+  hello
+&lt; undefined
+</code></pre>
+<p>Zauważ, że choć wypisała w konsoli 'hello' (co widać w drugim wierszu),
+to zwróciła undefined (wartość zwracana w konsoli poprzedzana jest znakiem
+mniejszości).</p>
+<p>Efektami ubocznymi są na przykład wypisanie czegoś w konsoli, wyświetlenie
+alertu, zmiana adresu URL w przeglądarce, czy przesunięcie obrazka na stronie.
+Efekty uboczne mogą jednak mieć bardziej subtelny charakter. Przyjrzyjmy się
+temu prostemu programowi:</p>
+<pre><code>var a = 1;
+
+function sideEffecting(b, c) {
+    a = 5;
+    return b + c;
+}
+
+var d = sideEffecting(10, 20);
+
+// W tym momencie wykonania programu zmienna d ma wartość 30 i jest
+// to wartość zwrócona przez funkcję `sideEffecting`. Co ciekawe
+// zmienna a ma wartość 5. Funkcja `sideEffecting` odniosła efekt
+// uboczny, którym była zmiana wartości zmiennej a.
+</code></pre>
+<p>Przeciwieństwem funkcji nieczystej jest funkcja <strong>czysta</strong> (<em>ang. pure</em>).
+Taka funckja nie powoduje żadnych efektów ubocznych, a dla takich samych
+argumentów zawsze przyjmuje tą samą wartość. Przykładami takich funkcji
+są <code>Math.sin</code> i `Math.pow</p>
+<pre><code>&gt; Math.pow(2, 3)
+&lt; 8
+&gt; Math.pow(2, 3)
+&lt; 8
+&gt; Math.sin(0)
+&lt; 0
+&gt; Math.sin(0)
+&lt; 0
+</code></pre>
+<p>Zazwyczaj w programach komputerowych znaczna większość funkcji powinna
+być czysta. Znacząco ułatwia to testowanie, debugowanie i wnioskowanie
+na temat działania programu. Niestety <strong>nie jest możliwa interakcja
+z użytkownikiem bez wykorzystania funkcji, które są impure</strong>. Pisząc
+programy należy statać się jednak oddzielić transformacje danych (funckje
+czyste), od funkcji służących interakcji z użytkownikiem.</p>
+<h3 id="co-to-jest-funkcja">Co to jest funkcja?</h3>
+<p>Poza przymiotami, które omówiliśmy funkcja w języku JavaScript <strong>jest obiektem</strong>,
+który <strong>reprezentuje obliczenia i instrukcje odłożone w czasie i składowane
+w zmiennej</strong>.</p>
+<p>Te dwie cechy sprawiają, że możemy traktować funkcje jako sposób wymiany
+algorytmów postępowania w różnych sytuacjach i obliczania różnych rzeczy.</p>
+<p>Dla przykładu:</p>
+<pre><code>var takSieSzczeka = function () {
+    console.log('Hau hau')
+};
+
+var szarik = {gatunek: 'pies', kolor: 'bury', zaszczekaj: takSieSzczeka};
+
+var burek = {gatunek: 'pies', kolor: 'czarny'}
+burek.zaszczekaj = takSieSzczeka;
+
+burek.zaszczekaj();
+szarik.zaszczekaj();
+
+// w konsoli wypisze się
+// Hau hau
+// Hau hau
+</code></pre>
+<p>Funkcja <code>takSieSzczeka</code> reprezentuje pewien przpepis na to, jak zaszczekać.
+Przepis ten przechowywany jest w obiekcie burek w polu <code>zaszczekaj</code> i w
+obiekcie szarik, też w polu <code>zaszczekaj</code>. Ważne jest, żeby pamiętać, że
+nadal jest to jeden i ten sam przepis:</p>
+<pre><code>burek.zaszczekaj == jakSieSzczeka // true
+szarki.zaszczekaj == jakSieSzczeka // true
+burek.zaszczekaj == szarik.zaszczekaj // true
+</code></pre>
+<p>Można więc powiedzieć, że zarówno burek, jak szarik posługują się
+tym samym sposobem na szczekanie.</p>
+<p>Odłożone w czasie obliczenia i instrukcje można zrealizować, czyli wywołać
+funkcję. Czyni się to pisząc nazwę, pod którą przepis się znajduje, a następnie
+w nawiasach argumenty. Jeśli funkcja przyjmuje 0 argumentów, to nawiasy są
+puste.</p>
+<h3 id="definiowanie-funkcji">Definiowanie funkcji</h3>
+<p>W treści rozdziału kilkakrotnie już pojawiały się definicje funkcji.</p>
+<h4 id="funkcja-anonimowa">Funkcja anonimowa</h4>
+<p>Większość opracowań dot. JavaScript poświęca miejsce funkcjom anonimowym
+pod koniec rozdziału o funkcjach. W istocie jednak, każda funkcja w Javascript
+rozpoczyna swoje "życie" jako funkcja anonimowa (a czasem również kończy).</p>
+<p>Funkcję anonimową definiuje się pisząc:</p>
+<pre><code>function (argument1, argument2, ... , argumentN) {
+    instrukcja1;
+    instrukcja2;
+    ...
+    return wartoscZwracana;
+}
+</code></pre>
+<p><code>function</code> to słowo kluczowe języka. Dalej w nawiasach następuje lista
+argumentów, a w klamrach blok instrukcji. Słowo kluczowe return określa
+jaka wartość zostanie z funkcji zwrócona. Jeśli funkcja zakończy swe działanie
+nie napotykając instrukcji return zwróci <code>undefined</code>.</p>
+<p>Funkcję anonimową można zdefiniować w konsoli:</p>
+<pre><code>&gt; (function (a, b) { return a + b; })
+&lt; function (a, b) { return a + b; }
+</code></pre>
+<p>Zwrócona przez to wyrażenie wartość to w istocie funkcja (a zatem definicja
+funkcji ma wartość! to ma doniosłe konsekwencje).</p>
+<h4 id="funkcje-nazwane">Funkcje nazwane</h4>
+<p>Termin <em>nazwane</em> pada jedynie dla podkreślenia uwagi. Zazwyczaj mówimy po
+prostu funkcje. Funkcja anonimowa przestaje taka być (staje się nazwana),
+gdy jesteśmy w stanie odwołać się do niej używając jakiejś nazwy.
+Sposobem na nazwanie funkcji jest przypisanie wartości jej definicji do
+zmiennej.</p>
+<pre><code>var myAdd = function (a, b) { return a + b; };
+</code></pre>
+<p>Teraz można już odwołać się do tej funkcji używając nazwy (zmiennej)
+<code>myAdd</code>.</p>
+<pre><code>&gt; myAdd
+&lt; function (a, b) { return a + b; }
+</code></pre>
+<p>A więc <code>myAdd</code> jest funkcją. Możemy ją zatem wywołać:</p>
+<pre><code>&gt; myAdd(1 + 6);
+&lt; 7
+</code></pre>
+<p>Jupi! Udało się.</p>
+<p>Zapis z przypisaniem do zmiennej można zastąpić nadaniem funkcji nazwy
+w jej definicji:</p>
+<pre><code>function myAdd = function (a, b) { return a + b; }
+// to jest dokładnie to samo w znaczeniu, co:
+var myAdd = function (a, b) { return a + b; }
+</code></pre>
+<p>Moje osobiste preferencje skłaniają się w stronę sposobu pod komentarzem,
+gdyż podkreśla on, że każda funkcja rozpoczyna swoje istnienie nienazwana,
+zyskując nazwę dopiero po przypisaniu jej do zmiennej. W istocie powiem
+przypisywanie rzeczy do zmiennych nie jest niczym innym jak nazywaniem ich
+(przemyśl to!).</p>
+<h2 id="funkcje-i-inne-obiekty">Funkcje i inne obiekty</h2>
+<p>Relacjom funkcji z innymi obiektami przyjrzymy się w dalszej części kursu,
+poniżej znajduje się tylko kilka uwag:</p>
+<h3>Funkcja a metoda</h3>
+<p>Funkcję przypisaną do zmiennej nazywamy po prostu funkcją:</p>
+<pre><code>var a = function () { console.log('hello'); };
+// a jest funkcją, a wywołujemy ją tak
+a();
+</code></pre>
+<p>Funkcję przypisaną do pola w obiekcie nazywamy metodą tego obiektu:</p>
+<pre><code>var kotek = {}
+kotek.a = function () { console.log('hello') };
+// a jest metodą obiektu kotek
+kotek.a() // a tak ją wywołujemy
+</code></pre>
+<p>Chociaż metody mają pewne szczególne własności, w JavaScript (w przeciwieństwie
+do niektórych innych języków programowania) są to właściwie dwa identyczne byty.</p>
+<h3>Funkcja w tablicy</h3>
+<p>Definicja funkcji zwraca wartość (funkcję).</p>
+<pre><code>&gt; (function () { return 1; })
+&lt; function () { return 1; }
+</code></pre>
+<p>W tablicy można przechowywać dowolne wartości, zatem można w niej przechowywać
+również funkcje.</p>
+<pre><code>var myfun1 = function () { return 1; }
+var myfun2 = function () { return 2; }
+var tab = [myfun1, myfun2, function () { return 3; }]
+// wywołanie takich funckji jest dosyć naturalne
+var result = tab[1](); // result = 2
+</code></pre>
+
+       </div>
+      </div>
+    </div>
+  </body>
+</html>
+
