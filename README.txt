@@ -1,65 +1,51 @@
-Metoda Monte Carlo - szacowanie liczby pi
+Konwersja kolorów hex na rgb
 =========================================
 
-Stosunek pola okrgęgu do pola kwadratu na nim opisanego można wyrazić jako:
+Kolory w arkuszach stylów CSS są często reprezentowane jako ciągi znaków
+o parzystej długości.
 
-     pi*r^2       pi
-    --------  =  ----
-     (2r)^2       4
+W takim ciągu każda dwójka zapisana heksadecymalnie reprezentuje liczbę
+z przedziału 0-255 (jeden bajt), na przykład dla łańcucha "ff0599aa" mamy:
 
-Jeśli przyjmiemy, że środek takiego okręgu leży w środku układu współrzędnych,
-to jest on opisany równaniem:
+    "ff" -> 255
+    "05" ->   5
+    "99" ->  99
+    "aa" -> 170
 
-    r^2 > x^2 + y^2
+W pliku `script.js` znajduje się szkielet programu który potrafi konwertować
+zapis heksadecymalny na tablice bitów.
 
-Kwadrat natomiast opisują nierówności:
+Uzupełnij funkcję `splitIntoPairs`, tak aby dzieliła ciąg znaków na tablicę
+dwójek:
 
-    -r < x < r      oraz    -r < y < r
+    "ff0599aa" -> ["ff", "05", "99", "aa"]
 
-Przyjmując arbitralnie, że r = 1 (badamy koło o promieniu długości 1 i
-opisany na nim kwardrat o boku 2):
+Zauważ, że w skrypcie znajdują się testy. Będziesz wiedział, że twoja funkcja
+działa poprawnie, gdy wypisane wyniki zgodzą się z oczekiwanymi.
 
-    koło:           x^2 + y^2 < 1                           (I)
-    kwadrat:        -1 < x < 1    oraz   -1 < y < 1         (II)
+Gdy funkcja `splitIntoPairs` będzie działać jak należy zajmij się funkcją
+`arrayOfPairsIntoArrayOfBytes`. Powinna ona zamieniać tablicę bajtów zapisanych
+heksadecymalnie na tablicę liczb:
 
-Generując losowo wiele punktów wewnąrz kwadratu (czyli spełniające
-nierównośi II) i sprawdzając ile z nich leży wewnątrz koła (czyli
-spełnia nierówność 1) otrzymujemy przybliżony stosunek pola koła
-do pola kwadratu.
+    ["ff", "05", "99", "aa"] -> [255, 5, 99, 170]
 
-Oznaczając:
+Podobnie jak poprzednio o poprawnym działaniu funkcji przekonasz się
+sprawdając wyniki w konsoli. Do zamieniania pojedynczej liczby hex na bajt możesz
+wykorzystać funkcję `parseInt`:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
 
-    m - liczba punktów wewnątrz koła
-    n - liczba punktów wewnąrz kwadratu
+Gdy obydwie powyższe funkcje działają, zauważ, że wystarczy przekazać wartość zwracaną
+przez `splitIntoPairs` do `arrayOfPairsIntoArrayOfBytes`, aby otrzymać funkcję
+realizującą żądany program.
 
-Dostajemy:
+Zdefiniuj `hexIntoBytes` w następujący sposób:
 
-    m       pi
-   ---  =  ----
-    n       4
+    var hexIntoBytes = function (s) { return arrayOfPairsIntoArrayOfBytes(splitIntoPairs(s)); };
 
-Stąd:
+Sprawdź jej działanie.
 
-            4m
-    pi  =  ----                                             (III)
-            n
-
-Sposób wykonania ćwiczenia
---------------------------
-
-W pliku `script.js` znajduje się pusta tablica `punktyKwadrat` oraz
-`punktyKolo`. Napisz pętlę, która wypełni tablicę `punktyKwadrat` tysiącem
-obiektów w postaci
-
-    {x: <losowa liczba z przedziału (-1, 1)>, y: <losowa liczba z przedziału (-1, 1)>}
-
-Do generowania losowych punktów możesz wykrzystać funkcję `Math.random`:
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-
-Do dodawania elementów do tablicy możesz wykorzystać funkcję `Array.push`
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
-
-Gdy wypełnisz tablicę `punktyKwadrat` napisz pętlę, która przeiteruje przez nią i punkty
-leżące wewnątrz koła umieści w tablicy `punktyKolo`.
-
-Na podstawie wzoru III oszacuj pi.
+Powyżej przedstawiony sposób działania jest często spotykany w programowaniu i
+polega na rozbiciu jednego problemu na kilka mniejszych, niezależnych od siebie.
+W przedstawionym przykładzie podział łańcucha na pary i konwersja par na liczby
+są niezależnymi od siebie problemami, jednak ich rozwiązania, wykorzystane razem
+rozwiązują bardziej złożony problem konwersji hex na bajty.
