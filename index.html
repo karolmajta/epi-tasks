@@ -4,35 +4,76 @@
     <meta charset="utf-8">
     <style>
         tbody {border: 1px solid black}
-        td {height: 50px; width: 50px; border: 1px solid black}
-        td.red {background-color: red}
-        td.green {background-color: green}
+        td {height: 20px; width: 20px; border: 1px solid black}
+        td.miss {background-color: red}
+        td.hit {background-color: green}
         p { color: gray }
         p.active-state { color: black }
     </style>
   </head>
   <body>
     <table>
+      <thead>
+        <tr>
+            <th></th>
+            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th>
+            <th>F</th><th>G</th><th>H</th><th>I</th><th>J</th>
+        </tr>
+      </thead>
       <tbody id="board">
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th>1</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th>2</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th>3</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>7</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>8</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>9</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>10</th>
+            <td></td><td></td><td></td><td></td><td></td>
+            <td></td><td></td><td></td><td></td><td></td>
         </tr>
       </tbody>
     </table>
-    <p id="state-red-move">Ruch czerwonego</p>
-    <p id="state-green-move">Ruch zielonego</p>
+    <p id="state-on">Do zatopienia pozostało ? statków</p>
     <p id="state-over">Koniec gry</p>
     <script src="http://underscorejs.org/underscore.js"></script>
     <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
