@@ -1,8 +1,41 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <style>
+        tbody {border: 1px solid black}
+        td {height: 50px; width: 50px; border: 1px solid black}
+        td.red {background-color: red}
+        td.green {background-color: green}
+        p { color: gray }
+        p.active-state { color: black }
+    </style>
   </head>
   <body>
+    <table>
+      <tbody id="board">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p id="state-red-move">Ruch czerwonego</p>
+    <p id="state-green-move">Ruch zielonego</p>
+    <p id="state-over">Koniec gry</p>
+    <script src="http://underscorejs.org/underscore.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
