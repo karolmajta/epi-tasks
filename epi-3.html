@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>EPI - Programowanie w języku JavaScript</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body { margin-top: 50px; margin-bottom: 50px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+
+<!-- generated content goes here -->
+
+
+<h1 id="this-w-javascript">This w JavaScript</h1>
+<h2 id="znaczenie-sowa-kluczowego-this-w-js">Znaczenie słowa kluczowego this w JS</h2>
+<p>Słowo kluczowe <code>this</code> w javascript może mieć różne znaczenie.
+Chciałbym napisać, że znaczenie to różni się w zależności od
+tego, w jakim kontekście słowo <code>this</code> jest użyte, ale prawda
+jest inna.</p>
+<blockquote>
+<p>Znaczenie słowa kluczowego <code>this</code> zależy od kontekstu
+w którym użyta zostanie funkcja, która tego słowa używa.
+Dokładnie zaś odnosi się ono do obiektu, którego pole
+zostało użyte do wywołania funkcji.</p>
+</blockquote>
+<p>Rozpatrzmy prostą funkcję:</p>
+<pre><code>var simpleFun = function () { console.log(this); };
+</code></pre>
+<p>Spróbuj wywołać ją w konsoli. Wszystkie funkcje zdefiniowane
+"globalnie" są domyślnie przechowywane w polach obiektu
+<code>window</code>, a zatem gdy wywołujemy <code>simpleFun</code>, <code>this</code> również
+odnosi się do <code>window</code>.</p>
+<p>Spróbujmy zatem następującego przykładu:</p>
+<pre><code>var myObj = { fun: simpleFun };
+</code></pre>
+<p>Spróbuj wywołać <code>myObj.fun</code> w konsoli. Pomimo, że wywołujesz
+dokładnie tą samą instancję funkcji (możesz to sprawdzić,
+<code>simpleFun === myObj.fun</code>, to znaczenie <code>this</code> jest inne.
+<code>this</code> zawsze wskazuje na obiekt, który został użyty do
+wywołania funkcji.</p>
+<p>Częstym przypadkiem w JS jest przekazywanie tzw. kontynuacji
+(<em>callbacks</em>), czyli instrukcji mówiącej funkcji jak co
+ma się stać po wykonaniu jakiejś czynności:</p>
+<pre><code>var continuation1 = function () {
+    console.log('Kontynuacja 1. This jest takie:');
+    console.log(this);
+};
+
+var someObj = {
+    fun: function (continuation) {
+        console.log('Coś się dzieje, this jest:');
+        console.log(this);
+        continuation();
+    }
+};
+
+someObj.fun(continuation1);
+// teraz this w kontynuacji pokazuje na window, ponieważ
+// kontynuacja nie jest i nie była przechowywana
+// nigdzie poza window.
+</code></pre>
+<p>Sprawa ma się nieco inaczej, jeśli wewnątrz <code>someObj.fun</code>
+utworzymy nową referencję do kontynuacji:</p>
+<pre><code>var someObj = {
+    fun: function (continuation) {
+        console.log('Coś się dzieje, this jest:');
+        console.log(this);
+        this.myContinuation = continuation
+        this.myContinuation();
+    }
+};
+
+someObj.fun(continuation2);
+// teraz this w kontynuacji pokazuje na someObj, bo to
+// someObj miało referencję przez którą wywołano
+// continuation 2
+</code></pre>
+<p>Oczywiście można jeszcze ciekawiej:</p>
+<pre><code>var someObj = {
+    fun: function (continuation) {
+        console.log('Coś się dzieje, this jest:');
+        console.log(this);
+        var obj = {hello: 'world', f: continuation};
+        obj.f();
+    }
+}
+someObj.fun(continuation2);
+// teraz this w kontynuacji pokazuje na obj, już pewnie
+// wiesz dlaczego!
+</code></pre>
+<p>Morał z tego rozdziału jest prosty. Jeśli będziesz przekazywać
+funkcję jako callback nigdy nie zakładaj z góry, że wiesz jakie
+znaczenie będzie miało <code>this</code> w momencie jej wywołania.</p>
+<h2 id="konstruktory-w-js-this-w-konstruktorach">Konstruktory w JS, this w konstruktorach</h2>
+<p>Okazuje się, że słowo kluczowe <code>this</code> może mieć jeszcze jedno
+znaczenie. Każdą funkcję w JavaScript można wywołać jako tzw.
+konstruktor. Konstruktor w JS różni się od zwykłej funkcji
+tylko tym, że zawsze zwraca obiekt, a słowo kluczowe <code>this</code>
+odnosi się w jego wnętrzu właśnie do tego obiektu.</p>
+<p>Zobaczmy:</p>
+<pre><code>var Person = function (age, height) {
+    this.age = age;
+    this.height = height;
+}
+
+// zauważ, że Person to zwykła funkcja.
+// to poprzedzenie jej wywołania słowem `new` sprawia,
+// że jest ona wywoływana jako konstruktor
+
+var peter = Person(22, 'tall');
+// {age: 22, height: 'tall'}
+var alice = Person(19, 'short');
+// {age: 19, height: 'short'}
+</code></pre>
+<p>Niestety zmienne znaczenie słowa <code>this</code> sprawia, że gdy
+wywołamy <code>Person</code> nie jako konstruktor, to pola zostaną
+przypisane do obiektu <code>window</code> (na niego pokazuje <code>this</code>
+w czasie wywołania):</p>
+<pre><code>var peter = Person(22, 'tall');
+// undefined
+// za to wyświetl w konsoli `window` i zobacz, że
+// nagle zyskało wzrost i wiek!
+</code></pre>
+<p>W związku z tym, że funkcje, których przeznaczone są do
+wywoływania jako konstruktory mogą powodować subtelne błędy
+sugeruję, gdy tylko jest to możliwe, w ich miejsce używać
+wzorca <strong>funkcji fabryki</strong> (ang. <em>factory function</em>).</p>
+<h2 id="funkcje-fabryki">Funkcje fabryki</h2>
+<p>Zauważ, że bardzo łatwo jest napisać funkcję, która zwróci
+obiekt dokładnie taki sam jak <code>new Person</code>, ale nie będzie
+przy tym korzystać ze słowa kluczowego <code>this</code>.</p>
+<pre><code>var personFactory = function (personAge, personHeight) {
+    return {
+        age: personAge,
+        height: personHeight
+    };
+};
+
+var peter = personFactory(22, 'tall');
+// {age: 22, height: 'tall'}
+</code></pre>
+<p>Zauważ, że konwencją jest nazywanie funkcji przeznaczonych
+do wywoływania jako konstruktory z dużej litery, a innych
+z małej.</p>
+<h3 id="dla-dociekliwych">Dla dociekliwych</h3>
+<p>Co ciekawe:</p>
+<pre><code>var alice = new personFactory(19, 'short');
+// {age: 29, height: 'short'}
+</code></pre>
+<p>A więc funkcję fabrykę można wywołać jako konstruktor! Tak.
+Jeśli funkcja wywoływana jako konstruktor <em>explicit</em>
+zadeklaruje wartość zwracaną poprzez użycie słowa <code>return</code>,
+przy czym wartością zwracaną będzie obiekt, tablica lub
+funkcja, to zostanie on zwrócony zamiast <code>this</code>. W innych
+wypadkach zwrócony będzie <code>this</code>.</p>
+<p>Nie doszukuj się w tym zachowaniu większego sensu i nie
+nadużywaj go do swoich celów.</p>
+<p>Z powyższego płynie jeden wniosek:</p>
+<pre><code>&gt; Funkcje fabryki są bezpieczniejsze niż konstruktory,
+&gt; bo wywołanie konstruktora jako funkcji prowadzi do
+&gt; błędów, a wywołanie fabryki jako konstruktora nie.
+</code></pre>
+<h2 id="enkapsulacja-w-js">Enkapsulacja w JS</h2>
+<p>Fabryki i konstruktory można łatwo wykorzystać do ukrywania
+szczegółów implementacji przed użytkownikiem obiektu:</p>
+<pre><code>var namedPersonFactory = function (personName, personJob) {
+    return {
+        sayName: function () { console.log(personName) },
+        job: personJob
+    };
+};
+
+var peter = namedPersonFactory('Peter', 'accountant');
+// po tym jak Peter został utworzony możemy kazać mu
+// powiedzieć jego imię
+peter.sayName() // 'Peter'
+// ale w żaden sposób nie możemy tego imienia zmienić
+// możemy za to kazać mu zmienić pracę :)
+peter.job = 'doctor';
+</code></pre>
+<p>Jako ćwiczenie możesz spróbować podobną enkapsulację zapewnić
+dla obiektu tworzonego w funkcji wywoływanej jako konstruktor.</p>
+
+       </div>
+      </div>
+    </div>
+  </body>
+</html>
+
