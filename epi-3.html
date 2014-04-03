@@ -112,9 +112,9 @@ odnosi się w jego wnętrzu właśnie do tego obiektu.</p>
 // to poprzedzenie jej wywołania słowem `new` sprawia,
 // że jest ona wywoływana jako konstruktor
 
-var peter = Person(22, 'tall');
+var peter = new Person(22, 'tall');
 // {age: 22, height: 'tall'}
-var alice = Person(19, 'short');
+var alice = new Person(19, 'short');
 // {age: 19, height: 'short'}
 </code></pre>
 <p>Niestety zmienne znaczenie słowa <code>this</code> sprawia, że gdy
