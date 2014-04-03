@@ -1,8 +1,39 @@
 <!doctype html>
 <html>
   <head>
+      <style>
+          div, canvas {
+              margin: 50px auto 50px auto;
+              display: block;
+          }
+
+          canvas {
+              border: 2px solid black;
+          }
+
+          #stats {
+              text-align: center;
+          }
+
+          #plan {
+              width: 800px;
+              height: 600px;
+          }
+
+          #histogram {
+              width: 800px;
+              height: 200px;
+          }
+
+      </style>
   </head>
   <body>
+    <div id="stats"></div>
+    <canvas id="plan"></canvas>
+    <canvas id="histogram"></canvas>
+    <script src="http://cloud.github.com/downloads/processing-js/processing-js/processing-1.4.1.js"></script>
+    <script src="http://underscorejs.org/underscore.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
